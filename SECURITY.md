@@ -1,11 +1,11 @@
 # Security Policy
 
-Omega Point Solutions builds Omega Field Command for law enforcement, where a
+Omega Point Solutions builds TacLinX for law enforcement, where a
 security defect is an officer-safety defect. We treat reports accordingly.
 
 ## Reporting a vulnerability
 
-If you believe you have found a security issue in an Omega Field Command
+If you believe you have found a security issue in a TacLinX
 deployment, or in anything described in this documentation, contact us directly:
 
 **[crose@omegapointsolutions.com](mailto:crose@omegapointsolutions.com)**
@@ -21,7 +21,7 @@ paid bug-bounty program at this time.
 ## Scope
 
 This repository is documentation only; it does not contain the implementation.
-Reports about a running Omega Field Command deployment, or about a claim made in
+Reports about a running TacLinX deployment, or about a claim made in
 these documents, are in scope. The proprietary source is maintained privately and
 is not distributed here.
 

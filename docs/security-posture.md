@@ -4,7 +4,7 @@ What is actually true about this platform's security, stated so that a procureme
 
 ## What we do not claim
 
-Omega Point Solutions does not assert CJIS, SOC 2, FedRAMP, or any other certification for Omega Field Command. Controls are described as designed toward the relevant standards. No compliance claim will appear in our material until an independent assessor validates it.
+Omega Point Solutions does not assert CJIS, SOC 2, FedRAMP, or any other certification for TacLinX. Controls are described as designed toward the relevant standards. No compliance claim will appear in our material until an independent assessor validates it.
 
 We would rather lose a box on a checklist than put a claim in front of an agency that we cannot substantiate.
 
@@ -70,7 +70,7 @@ We would rather lose a box on a checklist than put a claim in front of an agency
 
 ## Responsible disclosure
 
-If you believe you have found a security issue in an Omega Field Command deployment, contact [crose@omegapointsolutions.com](mailto:crose@omegapointsolutions.com). We will acknowledge receipt and work the issue directly. Please do not disclose publicly before we have had a chance to respond.
+If you believe you have found a security issue in a TacLinX deployment, contact [crose@omegapointsolutions.com](mailto:crose@omegapointsolutions.com). We will acknowledge receipt and work the issue directly. Please do not disclose publicly before we have had a chance to respond.
 
 ---
 

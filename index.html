@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TacLinX by Omega Point Solutions — Secure field operations and task force coordination</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06080f; --bg2:#0b0f1a;
+  --acc:#2f6df6; --acc2:#6ea8ff;
+  --red:#ef4444; --red2:#ff8080; --grn:#37d39b;
+  --t0:#f1f5fb; --t1:#c3ccdb; --t2:#7c8aa3;
+  --line:rgba(47,109,246,.16);
+  --card:rgba(14,20,34,.72);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t0);overflow-x:hidden;
+  background:radial-gradient(130% 100% at 76% -8%, #101a30 0%, var(--bg) 50%, #03050a 100%);}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1160px;margin:0 auto;padding:0 40px}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* backdrop */
+.grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:46px 46px;
+  -webkit-mask-image:radial-gradient(120% 80% at 72% 12%, #000 0%, transparent 72%);
+          mask-image:radial-gradient(120% 80% at 72% 12%, #000 0%, transparent 72%);
+  animation:gridPan 22s linear infinite;opacity:.5}
+@keyframes gridPan{to{transform:translate(46px,46px)}}
+#fx{position:fixed;inset:0;z-index:1;pointer-events:none}
+.blob{position:fixed;z-index:0;border-radius:50%;filter:blur(80px);pointer-events:none;animation:drift 20s ease-in-out infinite}
+.blob.b1{width:560px;height:560px;left:52%;top:-220px;background:radial-gradient(circle,rgba(47,109,246,.42),transparent 66%)}
+.blob.b2{width:440px;height:440px;left:-140px;top:420px;background:radial-gradient(circle,rgba(239,68,68,.22),transparent 66%);animation-delay:-8s}
+@keyframes drift{50%{transform:translate(38px,26px) scale(1.08)}}
+main,nav,footer{position:relative;z-index:2}
+
+/* nav */
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 40px;max-width:1160px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.brand b{font-weight:800;letter-spacing:.3px;font-size:16px}
+.brand b span{color:var(--acc2)}
+.ghost{border:1px solid rgba(47,109,246,.35);color:var(--acc2);padding:9px 16px;border-radius:10px;font-size:13.5px;font-weight:600;transition:.2s}
+.ghost:hover{background:rgba(47,109,246,.1);border-color:var(--acc)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center;padding:56px 0 40px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:600;letter-spacing:2.2px;text-transform:uppercase;color:var(--acc2);border:1px solid rgba(47,109,246,.28);background:rgba(47,109,246,.07);border-radius:999px;padding:7px 14px}
+.livedot{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px rgba(47,109,246,.22);animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{50%{opacity:.3}}
+h1{font-weight:900;font-size:60px;line-height:1;letter-spacing:-1.8px;margin:20px 0 0}
+h1 .g{background:linear-gradient(92deg,var(--acc) 0,var(--acc2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.type{margin-top:18px;height:22px;font-size:14px;color:var(--acc2);font-weight:600}
+.type .cur{display:inline-block;width:8px;background:var(--acc);margin-left:2px;animation:blink 1s steps(1) infinite}
+.byl{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:1.6px;color:var(--t2);text-transform:uppercase}
+.lead{margin-top:14px;font-size:19px;line-height:1.5;color:var(--t1);max-width:540px}
+.cta{margin-top:26px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn{padding:14px 22px;border-radius:12px;font-weight:700;font-size:15px;transition:.2s}
+.btn.p{background:linear-gradient(92deg,var(--acc),#4f86ff);color:#fff;box-shadow:0 10px 30px -10px rgba(47,109,246,.7)}
+.btn.p:hover{transform:translateY(-2px)}
+.btn.s{border:1px solid rgba(255,255,255,.14);color:var(--t0)}
+.btn.s:hover{border-color:var(--acc)}
+.trust{margin-top:22px;display:flex;gap:0;flex-wrap:wrap;font-size:12.5px;color:var(--t2)}
+.trust span{padding:0 15px;border-left:1px solid var(--line)}
+.trust span:first-child{padding-left:0;border-left:0}
+.trust b{color:var(--t1);font-weight:600}
+
+/* hero right: mesh + case card */
+.scene{position:relative;height:440px}
+#map{position:absolute;inset:0;width:100%;height:100%;
+  -webkit-mask-image:radial-gradient(78% 74% at 50% 47%, #000 52%, transparent 100%);
+          mask-image:radial-gradient(78% 74% at 50% 47%, #000 52%, transparent 100%)}
+.halo{position:absolute;left:50%;top:47%;width:172px;height:172px;transform:translate(-50%,-50%);border-radius:50%;z-index:2;
+  background:radial-gradient(circle,rgba(6,8,15,.9) 34%,rgba(6,8,15,.55) 56%,transparent 72%)}
+.emb{position:absolute;left:50%;top:47%;width:116px;transform:translate(-50%,-50%);filter:drop-shadow(0 6px 22px rgba(0,0,0,.8));z-index:3}
+.card{position:absolute;right:-6px;bottom:-8px;width:290px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;backdrop-filter:blur(8px);box-shadow:0 24px 60px -20px rgba(0,0,0,.7);z-index:4;overflow:hidden}
+.card::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(110,168,255,.10) 50%,transparent 70%);background-size:260% 100%;animation:sheen 5.5s linear infinite}
+@keyframes sheen{0%{background-position:130% 0}100%{background-position:-130% 0}}
+.card h4{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--red2);font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.card h4::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(239,68,68,.2);animation:blink 1.6s ease-in-out infinite}
+.crow{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding:5px 0;border-top:1px solid rgba(255,255,255,.05);opacity:0;animation:rowIn .5s forwards}
+.crow:nth-child(2){animation-delay:.2s}.crow:nth-child(3){animation-delay:.55s}.crow:nth-child(4){animation-delay:.9s}.crow:nth-child(5){animation-delay:1.25s}
+@keyframes rowIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.crow .u{color:var(--t1)}
+.pill{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:6px}
+.pill.d{color:var(--acc2);background:rgba(47,109,246,.14)}
+.pill.q{color:var(--t2);background:rgba(255,255,255,.06)}
+.pill.f{color:var(--red2);background:rgba(239,68,68,.14)}
+
+/* stat band */
+.statband{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:16px;background:rgba(11,15,26,.6);margin:26px 0 20px}
+.stat{padding:26px 20px;text-align:center;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font-size:44px;font-weight:900;letter-spacing:-1px;background:linear-gradient(92deg,var(--acc2),#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{display:block;margin-top:6px;font-size:11.5px;letter-spacing:.4px;color:var(--t2);font-family:'JetBrains Mono',monospace}
+
+/* sections */
+section{padding:46px 0}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:var(--acc2)}
+h2{font-size:34px;font-weight:800;letter-spacing:-.8px;margin:10px 0 8px}
+.sub{color:var(--t2);font-size:16px;max-width:640px;line-height:1.5}
+.evi{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+.evcard{border:1px solid var(--line);border-radius:14px;padding:22px;background:rgba(11,15,26,.5)}
+.evcard h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.evcard.red h3{color:var(--red2)}
+.evcard p{color:var(--t2);font-size:14px;line-height:1.55}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.ft{border:1px solid var(--line);border-radius:14px;padding:22px;background:rgba(11,15,26,.5);transition:.25s}
+.ft:hover{transform:translateY(-3px);border-color:rgba(47,109,246,.4)}
+.ft .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:rgba(47,109,246,.12);border:1px solid rgba(47,109,246,.25);margin-bottom:12px}
+.ft .ic svg{width:20px;height:20px;stroke:var(--acc2);fill:none;stroke-width:1.8}
+.ft h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.ft p{color:var(--t2);font-size:13.5px;line-height:1.5}
+
+/* pilot cta */
+.pilot{border:1px solid rgba(47,109,246,.3);border-radius:20px;padding:44px;text-align:center;background:radial-gradient(120% 140% at 50% 0%, rgba(47,109,246,.12), rgba(11,15,26,.4))}
+.pilot h2{font-size:32px}
+.pilot p{color:var(--t1);max-width:560px;margin:8px auto 0;font-size:16px;line-height:1.5}
+.pilot .cta{justify-content:center}
+
+footer{border-top:1px solid var(--line);margin-top:30px;padding:30px 0 44px}
+.frow{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.fcred{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2);letter-spacing:.4px}
+.tagline{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:3px;color:var(--acc2)}
+.fadeup{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+.fadeup.in{opacity:1;transform:none}
+
+@media(max-width:860px){.hero{grid-template-columns:1fr}.scene{height:360px}.evi,.feat{grid-template-columns:1fr}.statband{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0}h1{font-size:46px}}
+</style>
+</head>
+<body>
+<div class="grid"></div><canvas id="fx"></canvas>
+<div class="blob b1"></div><div class="blob b2"></div>
+
+<nav>
+  <div class="brand"><img src="assets/emblem-detailed.png" alt=""><b>Tac<span>LinX</span></b></div>
+  <a class="ghost" href="mailto:crose@omegapointsolutions.com?subject=Omega%20Field%20Command%20pilot">Request a pilot</a>
+</nav>
+
+<main>
+<div class="wrap">
+  <section class="hero">
+    <div class="left">
+      <span class="eyebrow"><span class="livedot"></span>Secure field operations</span>
+      <h1>Tac<span class="g">LinX</span></h1>
+      <div class="byl">by Omega Point Solutions</div>
+      <div class="type mono"><span id="tw"></span><span class="cur">&nbsp;</span></div>
+      <p class="lead">Task force coordination for law enforcement. One operating picture, on infrastructure the agency controls, without putting your data in a shared cloud tenant you cannot audit.</p>
+      <div class="cta">
+        <a class="btn p" href="mailto:crose@omegapointsolutions.com?subject=Omega%20Field%20Command%20pilot">Request a pilot</a>
+        <a class="btn s" href="https://github.com/hatchet11/omega-field-command-docs">Read the security posture</a>
+      </div>
+      <div class="trust">
+        <span><b>Tenant isolation</b> proven in CI</span>
+        <span><b>American made</b> by construction</span>
+        <span><b>CJIS</b>-oriented</span>
+      </div>
+    </div>
+
+    <div class="scene">
+      <canvas id="map"></canvas>
+      <div class="halo"></div>
+      <img class="emb" src="assets/emblem-detailed.png" alt="">
+      <div class="card">
+        <h4>Assistance alert · active</h4>
+        <div class="crow"><span class="u">Dispatch</span><span class="pill d">delivered</span></div>
+        <div class="crow"><span class="u">Unit 14</span><span class="pill d">delivered</span></div>
+        <div class="crow"><span class="u">Sgt. Alvarez</span><span class="pill q">sending</span></div>
+        <div class="crow"><span class="u">Unit 09</span><span class="pill f">failed</span></div>
+        <div class="crow"><span class="u">2 of 4 confirmed</span><span class="pill q mono">by ACK only</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="statband fadeup">
+    <div class="stat"><b data-to="78">0</b><span>tests · green in CI</span></div>
+    <div class="stat"><b data-to="2">0</b><span>runtime deps · US-origin</span></div>
+    <div class="stat"><b data-to="3">0</b><span>owner-controlled location modes</span></div>
+    <div class="stat"><b data-to="5">0</b><span>typed integration contracts</span></div>
+  </div>
+
+  <section id="why" class="fadeup">
+    <div class="kicker">Evidence, not adjectives</div>
+    <h2>Every vendor says secure. We prove it.</h2>
+    <p class="sub">These are the claims we can hand a procurement office in writing, and back with a test.</p>
+    <div class="evi">
+      <div class="evcard"><h3>Agencies cannot see each other's data</h3><p>Isolation is enforced by PostgreSQL row-level security, not an application WHERE clause, so the database refuses even when the application is wrong. An automated test applies the real migrations to a live database and asserts a cross-agency read returns nothing. The build fails if that proof does not run.</p></div>
+      <div class="evcard"><h3>No other vendor's product code is inside</h3><p>The web framework, authentication, mapping, and geocoder are Omega Point original work on United States foundations. The production build adds exactly two registered dependencies, and a build gate fails on anything else.</p></div>
+      <div class="evcard red"><h3>Officer safety is a correctness property</h3><p>Staleness, sharing state, and delivery are enforced invariants, not display logic. The suite asserts the denials first: cross-agency access, stale shown as live, a supervisor force-enabling sharing, and a replayed one-time code.</p></div>
+      <div class="evcard"><h3>No certification is claimed</h3><p>Controls are described as designed toward CJIS and related standards. We do not assert a certification until an independent assessor validates it. We would rather lose a checkbox than put a claim in front of an agency we cannot substantiate.</p></div>
+    </div>
+  </section>
+
+  <section id="features" class="fadeup">
+    <div class="kicker">Capabilities</div>
+    <h2>Built for the field, and for the compliance office.</h2>
+    <div class="feat">
+      <div class="ft"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 1114 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg></div><h3>Location that never lies</h3><p>Stale is labeled stale, GPS off renders off. One render path, so nothing can show an old fix as current.</p></div>
+      <div class="ft"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v6m0 0l-3-3m3 3l3-3"/><path d="M4 13a8 8 0 0016 0"/></svg></div><h3>One-tap assistance</h3><p>Per-recipient delivery state, acknowledgement, and a mandatory disposition on close. Delivered means a transport ACK, never assumed.</p></div>
+      <div class="ft"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div><h3>Structural tenant isolation</h3><p>Per-agency row-level security at the database, forced for the owner, proven against a live PostgreSQL on every commit.</p></div>
+      <div class="ft"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h14v16l-7-3-7 3z"/><path d="M9 9h6M9 12h6"/></svg></div><h3>Accountability by construction</h3><p>Append-only, hash-chained audit of every action including the denials. Coordinates and content scrubbed before write.</p></div>
+      <div class="ft"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>American made, enforced</h3><p>Two United States origin, permissively licensed dependencies. A CI gate parses every module and rejects anything else.</p></div>
+      <div class="ft"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 000 18M12 3a14 14 0 010 18"/></svg></div><h3>In-house mapping</h3><p>Web Mercator, a Census-method geocoder, and offline packages. Agencies can connect existing GIS, but none is required.</p></div>
+    </div>
+  </section>
+
+  <section class="fadeup">
+    <div class="pilot">
+      <h2>Shape the pilot.</h2>
+      <p>Phase 2 build. Identity, authorization, location, assistance, audit, and mapping are implemented and tested. Not yet released for production caseload, and no live agency data is in use. Early agencies shape the roadmap.</p>
+      <div class="cta">
+        <a class="btn p" href="mailto:crose@omegapointsolutions.com?subject=Omega%20Field%20Command%20pilot">Request a pilot</a>
+        <a class="btn s" href="https://github.com/hatchet11/omega-field-command-docs">Capability reference</a>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer><div class="wrap frow">
+  <div>
+    <div class="tagline">PROTECT.&nbsp; ENABLE.&nbsp; EMPOWER.</div>
+    <div class="fcred" style="margin-top:8px">A product of Omega Point Solutions LLC</div>
+  </div>
+  <div class="fcred" style="text-align:right">American made · CJIS-oriented · no certification claimed<br>omegapointsolutions.com · crose@omegapointsolutions.com</div>
+</div></footer>
+
+<script>
+// A. constellation particle field
+(function(){
+  const c=document.getElementById('fx'),x=c.getContext('2d');let w,h,dpr,P=[];
+  function rs(){dpr=Math.min(devicePixelRatio||1,2);w=c.width=innerWidth*dpr;h=c.height=innerHeight*dpr;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';
+    P=Array.from({length:Math.min(70,Math.floor(innerWidth/22))},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.16*dpr,vy:(Math.random()-.5)*.16*dpr}));}
+  rs();addEventListener('resize',rs);
+  (function loop(){x.clearRect(0,0,w,h);
+    for(const p of P){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
+    for(let i=0;i<P.length;i++){for(let j=i+1;j<P.length;j++){const a=P[i],b=P[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<130*dpr){x.strokeStyle='rgba(47,109,246,'+(.12*(1-d/(130*dpr)))+')';x.lineWidth=1;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();}}}
+    for(const p of P){x.fillStyle='rgba(110,168,255,.5)';x.beginPath();x.arc(p.x,p.y,1.5*dpr,0,7);x.fill();}
+    requestAnimationFrame(loop);})();
+})();
+
+// B. simulated tactical street map (streets + blue units + moving patrol + red assist)
+(function(){
+  const c=document.getElementById('map'),x=c.getContext('2d');let w,h,dpr;
+  function rs(){dpr=Math.min(devicePixelRatio||1,2);const r=c.getBoundingClientRect();w=c.width=r.width*dpr;h=c.height=r.height*dpr;}
+  rs();addEventListener('resize',rs);
+  // seeded street grid (stable, looks like a real map, not noise)
+  let seed=1337;const rnd=()=>{seed=(seed*1664525+1013904223)&0x7fffffff;return seed/0x7fffffff;};
+  const roads=[];
+  for(let i=0;i<=9;i++)roads.push({o:'h',p:i/9+(rnd()-.5)*.022,major:i%3===0});
+  for(let i=0;i<=9;i++)roads.push({o:'v',p:i/9+(rnd()-.5)*.022,major:i%3===0});
+  const diag=[{x1:.02,y1:.24,x2:.9,y2:.98},{x1:.12,y1:.98,x2:.98,y2:.2}];
+  const majH=roads.find(r=>r.o==='h'&&r.major).p;
+  seed=99;const units=[];for(let i=0;i<6;i++)units.push({x:.1+rnd()*.8,y:.1+rnd()*.8,ph:rnd()*6,bl:rnd()<.45});
+  const assist={x:.735,y:.235};let t=0,patrol=0;
+  (function loop(){x.clearRect(0,0,w,h);
+    for(const d of diag){x.strokeStyle='rgba(96,124,166,.11)';x.lineWidth=1*dpr;x.beginPath();x.moveTo(d.x1*w,d.y1*h);x.lineTo(d.x2*w,d.y2*h);x.stroke();}
+    for(const r of roads){x.lineWidth=(r.major?2.4:1)*dpr;x.strokeStyle=r.major?'rgba(124,154,198,.30)':'rgba(96,124,166,.13)';x.beginPath();
+      if(r.o==='h'){x.moveTo(0,r.p*h);x.lineTo(w,r.p*h);}else{x.moveTo(r.p*w,0);x.lineTo(r.p*w,h);}x.stroke();}
+    // blue unit dots
+    for(const u of units){const a=u.bl?(.55+.4*Math.sin(t*.05+u.ph)):.85;x.fillStyle='rgba(110,168,255,'+a+')';
+      x.shadowColor='rgba(47,109,246,.85)';x.shadowBlur=8*dpr;x.beginPath();x.arc(u.x*w,u.y*h,3.4*dpr,0,7);x.fill();x.shadowBlur=0;}
+    // moving patrol unit along a major road
+    patrol=(patrol+.0016)%1;x.fillStyle='rgba(120,175,255,.95)';x.shadowColor='rgba(47,109,246,.9)';x.shadowBlur=10*dpr;
+    x.beginPath();x.arc(patrol*w,majH*h,3.3*dpr,0,7);x.fill();x.shadowBlur=0;
+    // red assist dot + expanding ring
+    const ax=assist.x*w,ay=assist.y*h,pp=(Math.sin(t*.06)+1)/2;
+    x.strokeStyle='rgba(239,68,68,'+(.55-pp*.45)+')';x.lineWidth=1.6*dpr;x.beginPath();x.arc(ax,ay,(6+pp*18)*dpr,0,7);x.stroke();
+    x.fillStyle='#ef4444';x.shadowColor='rgba(239,68,68,.95)';x.shadowBlur=12*dpr;x.beginPath();x.arc(ax,ay,5*dpr,0,7);x.fill();x.shadowBlur=0;
+    t++;requestAnimationFrame(loop);})();
+})();
+
+// typewriter
+(function(){const el=document.getElementById('tw');const lines=['binding agency to database session','row-level security engaged','assistance alert delivered · ACK confirmed','audit event written · hash-chained'];
+  let li=0,ci=0,del=false;
+  (function tick(){const s=lines[li];el.textContent=s.slice(0,ci);
+    if(!del&&ci<s.length){ci++;setTimeout(tick,45);}
+    else if(!del&&ci===s.length){del=true;setTimeout(tick,1500);}
+    else if(del&&ci>0){ci--;setTimeout(tick,22);}
+    else{del=false;li=(li+1)%lines.length;setTimeout(tick,300);}})();
+})();
+
+// fadeup reveals
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.fadeup').forEach(n=>io.observe(n));
+
+// E. count-up
+(function(){const ob=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;ob.unobserve(e.target);
+  e.target.querySelectorAll('b[data-to]').forEach(b=>{const to=+b.dataset.to,dec=+(b.dataset.dec||0),pre=b.dataset.pre||'';let s=null;
+    (function an(ts){s=s||ts;const p=Math.min((ts-s)/1100,1),e2=1-Math.pow(1-p,3);b.textContent=pre+(to*e2).toFixed(dec);if(p<1)requestAnimationFrame(an);})(performance.now());});
+}),{threshold:.5});document.querySelectorAll('.statband').forEach(n=>ob.observe(n));})();
+</script>
+</body>
+</html>

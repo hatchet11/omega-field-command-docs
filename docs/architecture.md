@@ -1,6 +1,6 @@
 # Architecture
 
-How Omega Field Command is put together, and why each load-bearing decision was made that way.
+How TacLinX is put together, and why each load-bearing decision was made that way.
 
 ## Design principles
 

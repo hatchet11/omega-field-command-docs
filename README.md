@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="Omega Field Command" width="100%">
+<img src="assets/banner.png" alt="TacLinX" width="100%">
 
 <br>
 
@@ -9,7 +9,7 @@
 [![Runtime dependencies](https://img.shields.io/badge/runtime%20dependencies-2-8b8b8b?style=for-the-badge&labelColor=0a1020)](docs/american-made.md)
 [![License](https://img.shields.io/badge/license-Proprietary-4a5568?style=for-the-badge&labelColor=0a1020)](LICENSE)
 
-**[Request a pilot](mailto:crose@omegapointsolutions.com?subject=Omega%20Field%20Command%20pilot)**  ·  [Architecture](docs/architecture.md)  ·  [Security posture](docs/security-posture.md)  ·  [American made](docs/american-made.md)
+**[Request a pilot](mailto:crose@omegapointsolutions.com?subject=TacLinX%20pilot)**  ·  [Architecture](docs/architecture.md)  ·  [Security posture](docs/security-posture.md)  ·  [American made](docs/american-made.md)
 
 <sub>A product of <b>Omega Point Solutions LLC</b></sub>
 
@@ -19,7 +19,7 @@
 
 ## What it does
 
-Field Command answers three questions an agency has to get right, and that ordinary tools get wrong quietly.
+TacLinX answers three questions an agency has to get right, and that ordinary tools get wrong quietly.
 
 - **Where are my officers.** Stale is labeled stale. GPS off renders off. One render path, so nothing can show an old fix as current.
 - **Who needs help, now.** One-tap assistance with per-recipient delivery state, acknowledgement, and a mandatory disposition on close.
@@ -121,7 +121,7 @@ Pilot slots are open now, and early agencies shape the roadmap.
 **Omega Point Solutions LLC**
 [omegapointsolutions.com](https://omegapointsolutions.com)  ·  [crose@omegapointsolutions.com](mailto:crose@omegapointsolutions.com)
 
-**[Request a pilot](mailto:crose@omegapointsolutions.com?subject=Omega%20Field%20Command%20pilot)** for a technical walkthrough or procurement documentation.
+**[Request a pilot](mailto:crose@omegapointsolutions.com?subject=TacLinX%20pilot)** for a technical walkthrough or procurement documentation.
 
 ---
 
