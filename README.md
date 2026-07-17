@@ -7,10 +7,10 @@
 **PROTECT. ENABLE. EMPOWER.**
 
 [![Status](https://img.shields.io/badge/status-Phase%202%20build-1ea0ff?style=for-the-badge&labelColor=0a1020)](#status)
-[![Platform](https://img.shields.io/badge/platform-Python%20%C2%B7%20PostgreSQL-0a1020?style=for-the-badge&labelColor=0a1020)](#architecture)
-[![Runtime deps](https://img.shields.io/badge/runtime%20dependencies-2-d9a441?style=for-the-badge&labelColor=0a1020)](#american-made-by-construction)
-[![Isolation](https://img.shields.io/badge/tenant%20isolation-proven%20in%20CI-1ea0ff?style=for-the-badge&labelColor=0a1020)](#evidence-not-adjectives)
+[![Runtime dependencies](https://img.shields.io/badge/runtime%20dependencies-2-d9a441?style=for-the-badge&labelColor=0a1020)](docs/american-made.md)
 [![License](https://img.shields.io/badge/license-Proprietary-8b8b8b?style=for-the-badge&labelColor=0a1020)](LICENSE)
+
+**[Request a pilot](mailto:crose@omegapointsolutions.com?subject=Omega%20Field%20Command%20pilot)** · [Architecture](docs/architecture.md) · [Security posture](docs/security-posture.md) · [American made](docs/american-made.md)
 
 <sub>A product of <b>Omega Point Solutions LLC</b> · Fraud Detection · Critical Infrastructure · Public Safety</sub>
 
@@ -18,122 +18,71 @@
 
 ---
 
-## Overview
+## What it does
 
-Omega Field Command coordinates officers in the field: where they are, when they need help, and who actually got the call. It is built for agencies and multi-agency task forces that need one operating picture without handing their data to a shared cloud tenant they cannot audit.
+Field Command answers three questions an agency has to get right, and that ordinary tools get wrong quietly.
 
-This repository is the public documentation and capability reference. The implementation is maintained privately.
+- **Where are my officers.** Stale is labeled stale. GPS off renders off. One render path, so nothing can show an old fix as current.
+- **Who needs help, now.** One-tap assistance with per-recipient delivery state, acknowledgement, and a mandatory disposition on close.
+- **Who actually got the call.** `delivered` is set only on a transport acknowledgement. Exhausted retries surface to the requesting officer as failed, by name.
 
-## The problem it removes
+Built for agencies and multi-agency task forces that need one operating picture without putting their data in a shared cloud tenant they cannot audit.
 
-Field coordination tools fail in specific, survivable-looking ways. Those failures are the design targets here.
+## Why it is different: evidence, not adjectives
 
-| Failure in the field | What it costs | How Field Command answers it |
-|---|---|---|
-| A map shows a location that is minutes old as if it were current | Units respond to where an officer *was* | Location is a state machine with one render path. Stale is labeled stale. GPS off renders off. There is no code path that can present a stale fix as live. |
-| The system says "delivered" because it handed the alert to a transport | Nobody is coming, and the requesting officer does not know | `delivered` is set only on a transport acknowledgement. Exhausted retries surface as `failed` to the requester, per recipient. |
-| A supervisor can silently switch on an officer's location sharing | Trust in the tool collapses, and adoption with it | Only the device owner can transition into a sharing state. The rule is enforced in the state machine, not in a UI check. |
-| One agency's bug exposes another agency's data | Task force participation ends | Isolation is enforced by the database with row level security, not by application `WHERE` clauses. |
-| "Who looked at this record?" cannot be answered | The record is not defensible | Every allow, deny, and error is written to an append only, hash chained audit trail. |
+Every vendor says secure. These are the claims we can hand you proof for.
+
+**Agencies cannot see each other's data, and it is proven on every commit.**
+Isolation is enforced by PostgreSQL row-level security, not by an application `WHERE` clause, so the database refuses even when the application is wrong. An automated test applies the real migrations to a live database and asserts that a cross-agency read returns nothing and an unbound session returns zero rows instead of every row. The build fails if that proof does not run.
+
+**No other vendor's product code ships inside the platform, and a gate enforces it.**
+The web framework, authentication, mapping, and geocoder are Omega Point original work on permissively licensed United States foundations. The production build adds exactly two registered dependencies. A build gate parses every module and fails on anything else.
+
+**Officer safety is a correctness property, and the failure cases are the tests.**
+Staleness, sharing state, and delivery status are enforced invariants, not display logic. The suite asserts the denials first: cross-agency access, stale shown as live, a supervisor force-enabling an officer's sharing, and a replayed one-time code.
+
+**No certification is claimed.**
+Controls are described as designed toward the relevant standards. We do not assert CJIS, SOC 2, or FedRAMP until an independent assessor validates it. We would rather lose a checkbox than put a claim in front of an agency that we cannot substantiate.
 
 ## Capabilities
 
 | Area | Capability |
 |---|---|
-| **Location** | Owner controlled sharing modes, computed staleness, approximate and manual pin modes, single authoritative render path |
-| **Officer assistance** | One tap request, per recipient delivery state, acknowledgement and decline, mandatory disposition on resolve, full timeline |
-| **Access control** | Role based access as data, evaluated per request. Revoking a role takes effect on the next request, with no token cache to wait out |
-| **Multi agency** | Per agency isolation enforced at the database layer, scoped grants for units, task forces, cases, and operations |
-| **Accountability** | Append only, hash chained audit of every sensitive action, with coordinates and message content scrubbed before write |
-| **Mapping** | In house mapping stack built on United States government public domain data, including offline packages for degraded coverage |
-| **Identity** | Mandatory multi factor authentication, hashed opaque session tokens, instant revocation and suspension, account lockout |
-| **Integrations** | Typed contracts for analysis and intelligence systems. Every call carries actor and purpose, and returns citations flagged for human review |
-
-## How it is built differently
-
-### Isolation is structural, not conventional
-
-Most multi tenant systems keep tenants apart with an application filter. One missed clause leaks another agency's data. Field Command binds the agency to the database session, and PostgreSQL row level security filters every query. The application cannot see another agency's rows even when the application is wrong.
-
-### Officer safety is a correctness property
-
-Staleness, sharing state, and delivery status are not display concerns. They are enforced invariants with tests that assert the failure cases, written before the features.
-
-### Accountability by construction
-
-The audit trail is a wrapper around every sensitive handler rather than a call developers remember to add. It is append only at the database layer and hash chained, so a removed row breaks the chain.
-
-### American made by construction
-
-No other vendor's product code ships inside this platform. The web framework, validation, authentication, multi factor authentication, mapping, tiling, and geocoder are Omega Point original work. The foundations are permissively licensed and United States origin: Python from the Python Software Foundation, PostgreSQL from Berkeley. Map data comes from United States government sources that are public domain by statute.
-
-The production build adds exactly two dependencies, both permissively licensed and both audited into the provenance register. A build gate fails the pipeline if anything else is imported. See [American made by construction](docs/american-made.md).
+| **Location** | Owner-controlled sharing, computed staleness, offline map packages |
+| **Assistance** | One-tap request, per-recipient delivery state, mandatory disposition |
+| **Access control** | Role-based, evaluated per-request. Revocation lands on the next request |
+| **Multi-agency** | Per-agency isolation at the database layer, scoped grants |
+| **Accountability** | Append-only, hash-chained audit. Coordinates scrubbed before write |
+| **Mapping** | In-house stack on United States public domain data |
+| **Identity** | Mandatory multi-factor authentication, instant revocation, lockout |
+| **Integrations** | Typed contracts. Every call carries actor and purpose |
 
 ## Architecture
 
 ```mermaid
-flowchart TB
-    subgraph Clients
-        MOB["Mobile<br/>iOS / Android"]
-        WEB["Web / desktop"]
-    end
-
-    subgraph Edge["API edge"]
-        GW["Gateway<br/>TLS 1.3, short lived tokens"]
-        SESS["Session validation<br/>MFA state, device trust"]
-        TEN["Tenant binding<br/>per request agency"]
-    end
-
-    subgraph Core["Application core"]
-        AUTHZ["Authorization<br/>role based, query time"]
-        AUD["Audit<br/>append only, hash chained"]
-        FSM["Location state machine<br/>single source of truth"]
-        ASSIST["Assistance workflow<br/>queue, transport ACK"]
-        GIS["Mapping<br/>layers, offline packages"]
-    end
-
-    subgraph Data["Data layer"]
-        PG[("PostgreSQL<br/>row level security<br/>per agency isolation")]
-        AUDLOG[("Audit log<br/>append only")]
-    end
-
-    MOB --> GW
-    WEB --> GW
-    GW --> SESS --> TEN --> AUTHZ
-    AUTHZ --> ASSIST & FSM & GIS
-    AUTHZ -. every decision .-> AUD
-    ASSIST & FSM & GIS -. sensitive actions .-> AUD
-    AUD --> AUDLOG
-    Core --> PG
+flowchart LR
+    C["Officers<br/>mobile and web"] --> E["API edge<br/>MFA, agency binding"]
+    E --> A["Application core<br/>location, assistance, mapping"]
+    A --> D[("PostgreSQL<br/>per-agency isolation")]
+    A -. every decision .-> L[("Audit log<br/>append-only")]
 ```
 
-Detail: [Architecture](docs/architecture.md) · [Security posture](docs/security-posture.md)
+Agency data stays on agency-owned infrastructure, or in a United States region of the agency's choosing, behind the agency's own reverse proxy. The platform never needs an outbound connection to a vendor cloud to work.
 
-## Evidence, not adjectives
-
-Security claims are worth what their proof is worth. Ours:
-
-- **Tenant isolation is proven on every commit.** An automated test applies the real migrations to a live PostgreSQL instance and asserts that one agency cannot see or modify another's records, that an unbound session returns zero rows rather than all rows, and that the audit log rejects updates and deletes. The pipeline fails if that proof does not run.
-- **The provenance rule is machine checked.** A build gate parses every product module and fails on any import outside the standard library, Omega Point packages, and the two registered dependencies.
-- **Failure cases are tested first.** The suite asserts the denials: cross agency access, stale location presented as live, non owner sharing, replayed multi factor codes, and unacknowledged delivery.
-- **No certification is claimed.** Controls are described as designed toward the relevant standards. Omega Point does not assert CJIS, SOC 2, or any other certification for this platform until an independent assessor validates it. See [Security posture](docs/security-posture.md).
-
-## Deployment
-
-Agency owned infrastructure or United States hosted regions of United States providers. The platform runs behind the agency's own reverse proxy and never requires an outbound connection to a vendor cloud to function.
+[Full architecture](docs/architecture.md) · [Security posture](docs/security-posture.md)
 
 ## Status
 
-Phase 2 build. Core identity, authorization, location, assistance, audit, and mapping are implemented and tested. The platform is not yet released for production caseload, and no live agency data is in use.
+Phase 2 build. Identity, authorization, location, assistance, audit, and mapping are implemented and tested. Not yet released for production caseload, and no live agency data is in use.
 
-Agencies interested in shaping the pilot are the right conversation right now.
+Pilot slots are open now, and early agencies shape the roadmap.
 
 ## Contact
 
 **Omega Point Solutions LLC**
 [omegapointsolutions.com](https://omegapointsolutions.com) · [crose@omegapointsolutions.com](mailto:crose@omegapointsolutions.com)
 
-For pilot enquiries, procurement documentation, or a technical walkthrough, reach out directly.
+**[Request a pilot](mailto:crose@omegapointsolutions.com?subject=Omega%20Field%20Command%20pilot)** for a technical walkthrough or procurement documentation.
 
 ---
 

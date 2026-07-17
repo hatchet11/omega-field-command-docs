@@ -1,6 +1,6 @@
 # Architecture
 
-How Omega Field Command is put together, and why each load bearing decision was made that way.
+How Omega Field Command is put together, and why each load-bearing decision was made that way.
 
 ## Design principles
 
@@ -9,13 +9,13 @@ How Omega Field Command is put together, and why each load bearing decision was 
 3. **Accountability is not optional.** Every sensitive action is audited, including the denials.
 4. **Own the stack.** No other vendor's product code inside the platform.
 
-## Load bearing decisions
+## Load-bearing decisions
 
 ### Tenant isolation is structural
 
-Row level security policies keyed to the requesting agency make cross agency reads impossible at the database layer. The agency is bound to the database session for the life of the request, and PostgreSQL filters every query against it.
+Row-level security policies keyed to the requesting agency make cross-agency reads impossible at the database layer. The agency is bound to the database session for the life of the request, and PostgreSQL filters every query against it.
 
-The distinction matters. If isolation lives in an application `WHERE` clause, then one forgotten clause in one handler is a cross agency breach. If isolation lives in the database, the query engine refuses regardless of what the application asks for. Isolation is also forced for the table owner, and the application connects as a least privilege role that owns nothing.
+The distinction matters. If isolation lives in an application `WHERE` clause, then one forgotten clause in one handler is a cross-agency breach. If isolation lives in the database, the query engine refuses regardless of what the application asks for. Isolation is also forced for the table owner, and the application connects as a least-privilege role that owns nothing.
 
 ### Access control is data
 
@@ -31,13 +31,13 @@ Because there is a single render path, there is no second code path that could p
 
 ### Delivery is never assumed
 
-Assistance alerts move through queued, sending, delivered, seen, and acknowledged states, with one row per intended recipient. `delivered` requires a transport level acknowledgement. Retries are bounded, and exhausted retries surface to the requesting officer as failed rather than disappearing.
+Assistance alerts move through queued, sending, delivered, seen, and acknowledged states, with one row per intended recipient. `delivered` requires a transport-level acknowledgement. Retries are bounded, and exhausted retries surface to the requesting officer as failed rather than disappearing.
 
 An officer who requested help sees the truth about who received it.
 
 ### Audit is a wrapper, not a call
 
-Sensitive handlers are wrapped rather than instrumented by hand, so allow, deny, and error outcomes are all recorded through one path. The trail is append only at the database layer and hash chained, so a removed row breaks the chain and is detectable. A scrubber strips coordinates, message content, and credentials before anything is written, because an audit log is not a place for the payload.
+Sensitive handlers are wrapped rather than instrumented by hand, so allow, deny, and error outcomes are all recorded through one path. The trail is append-only at the database layer and hash-chained, so a removed row breaks the chain and is detectable. A scrubber strips coordinates, message content, and credentials before anything is written, because an audit log is not a place for the payload.
 
 ### Integrations are contracts
 
@@ -49,9 +49,9 @@ The mapping stack is Omega Point original work built on United States government
 
 - Web Mercator projection, tiling, and distance mathematics as a single implementation shared by the geocoder, tile cutter, offline packager, and renderer.
 - A reader for United States Census TIGER/Line data.
-- A geocoder using the Census Bureau's own address range interpolation method, with reverse geocoding.
+- A geocoder using the Census Bureau's own address-range interpolation method, with reverse geocoding.
 - A vector tile format with GeoJSON export, and offline region packages for degraded coverage.
-- A map renderer with no third party mapping library.
+- A map renderer with no third-party mapping library.
 
 Agencies that already license commercial GIS systems can connect them. The platform never requires one.
 
@@ -59,12 +59,12 @@ Agencies that already license commercial GIS systems can connect them. The platf
 
 - Sensitive fields are encrypted at the application layer with authenticated encryption, so the database never holds the plaintext. Ciphertext is bound to the record it belongs to and cannot be replayed into another row.
 - Session tokens are opaque random values. Only a hash is stored, so the token database is not a credential store.
-- Passwords use a memory of the cost parameters per record, so cost can be raised over time.
+- Password hashing stores its cost parameters per record, so the cost can be raised over time without locking anyone out.
 - Key rotation is supported: retired keys stay resolvable for decryption while new writes use the current key.
 
 ## Deployment shape
 
-The platform runs behind the agency's TLS terminating reverse proxy on agency owned infrastructure or a United States hosted region of a United States provider. It does not require an outbound connection to a vendor cloud to function.
+The platform runs behind the agency's TLS-terminating reverse proxy on agency-owned infrastructure or a United States-hosted region of a United States provider. It does not require an outbound connection to a vendor cloud to function.
 
 ---
 
