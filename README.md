@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/omega-emblem.png" alt="Omega Point Solutions" width="132">
+
 # OMEGA FIELD COMMAND
 
 ### Secure field operations and task force coordination for law enforcement.
