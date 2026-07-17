@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/omega-emblem.png" alt="Omega Point Solutions" width="132">
+<img src="assets/omega-point-logo.png" alt="Omega Point Solutions" width="200">
 
 # OMEGA FIELD COMMAND
 
@@ -9,8 +9,9 @@
 **PROTECT. ENABLE. EMPOWER.**
 
 [![Status](https://img.shields.io/badge/status-Phase%202%20build-1ea0ff?style=for-the-badge&labelColor=0a1020)](#status)
-[![Runtime dependencies](https://img.shields.io/badge/runtime%20dependencies-2-d9a441?style=for-the-badge&labelColor=0a1020)](docs/american-made.md)
-[![License](https://img.shields.io/badge/license-Proprietary-8b8b8b?style=for-the-badge&labelColor=0a1020)](LICENSE)
+[![American made](https://img.shields.io/badge/American%20made-by%20construction-d9a441?style=for-the-badge&labelColor=0a1020)](docs/american-made.md)
+[![Runtime dependencies](https://img.shields.io/badge/runtime%20dependencies-2-8b8b8b?style=for-the-badge&labelColor=0a1020)](docs/american-made.md)
+[![License](https://img.shields.io/badge/license-Proprietary-4a5568?style=for-the-badge&labelColor=0a1020)](LICENSE)
 
 **[Request a pilot](mailto:crose@omegapointsolutions.com?subject=Omega%20Field%20Command%20pilot)** · [Architecture](docs/architecture.md) · [Security posture](docs/security-posture.md) · [American made](docs/american-made.md)
 
