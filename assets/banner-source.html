@@ -6,80 +6,76 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;600&display=swap');
 
 :root{
-  --bg:#0a1020; --bg2:#0e1c2b;
-  --acc:#1ea0ff; --acc2:#7fd0ff;
-  --amber:#d9a441;
-  --t2:#8296b4;
-  --line:rgba(30,160,255,.16);
-  --chrome:#dfe6f2;
+  --bg:#06080f;
+  --blue:#2f6df6; --blue2:#6ea8ff;
+  --red:#ef4444; --red2:#ff8080;
+  --chrome:#eef2f8; --t1:#c3ccdb; --t2:#7c8aa3;
+  --line:rgba(47,109,246,.16);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1280px;height:640px;overflow:hidden}
 body{
   font-family:'Inter',system-ui,sans-serif;
-  background:radial-gradient(120% 120% at 72% 18%, #14223a 0%, var(--bg) 55%, #070c17 100%);
-  color:var(--t0); position:relative;
+  background:radial-gradient(120% 120% at 74% 20%, #10182c 0%, var(--bg) 52%, #03050a 100%);
+  color:var(--chrome); position:relative;
 }
-/* panning grid, masked radial */
 .grid{position:absolute;inset:0;
   background-image:linear-gradient(var(--line) 1px,transparent 1px),
                    linear-gradient(90deg,var(--line) 1px,transparent 1px);
   background-size:44px 44px;
-  -webkit-mask-image:radial-gradient(120% 90% at 70% 30%, #000 0%, transparent 78%);
-          mask-image:radial-gradient(120% 90% at 70% 30%, #000 0%, transparent 78%);
-  opacity:.55;
+  -webkit-mask-image:radial-gradient(120% 90% at 70% 34%, #000 0%, transparent 78%);
+          mask-image:radial-gradient(120% 90% at 70% 34%, #000 0%, transparent 78%);
+  opacity:.5;
 }
-/* drifting glow blobs */
-.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
-.blob.a{width:520px;height:520px;left:44%;top:-160px;background:radial-gradient(circle,rgba(30,160,255,.55),transparent 65%)}
-.blob.b{width:420px;height:420px;left:-120px;top:220px;background:radial-gradient(circle,rgba(217,164,65,.22),transparent 65%)}
-.vig{position:absolute;inset:0;box-shadow:inset 0 0 180px 40px rgba(3,7,15,.7)}
+.blob{position:absolute;border-radius:50%;filter:blur(72px)}
+.blob.blue{width:520px;height:520px;left:46%;top:-150px;background:radial-gradient(circle,rgba(47,109,246,.5),transparent 66%);opacity:.55}
+.blob.red{width:400px;height:400px;left:-110px;top:250px;background:radial-gradient(circle,rgba(239,68,68,.28),transparent 66%);opacity:.5}
+.vig{position:absolute;inset:0;box-shadow:inset 0 0 190px 50px rgba(2,4,9,.78)}
 
-.wrap{position:absolute;inset:0;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;padding:0 68px}
+.wrap{position:absolute;inset:0;display:grid;grid-template-columns:1.12fr .88fr;align-items:center;padding:0 68px}
 
-/* LEFT */
 .eyebrow{display:inline-flex;align-items:center;gap:9px;
   font-family:'JetBrains Mono',monospace;font-weight:600;font-size:12.5px;letter-spacing:2.4px;
-  text-transform:uppercase;color:var(--acc2);
-  border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:rgba(30,160,255,.06)}
-.dot{width:8px;height:8px;border-radius:50%;background:#37d39b;box-shadow:0 0 0 4px rgba(55,211,155,.18)}
+  text-transform:uppercase;color:var(--blue2);
+  border:1px solid rgba(47,109,246,.28);border-radius:999px;padding:7px 14px;background:rgba(47,109,246,.07)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(47,109,246,.22)}
 h1{font-weight:900;font-size:63px;line-height:.98;letter-spacing:-1.6px;margin:20px 0 0;color:var(--chrome)}
-h1 .g{background:linear-gradient(92deg,var(--acc) 0%,var(--acc2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 .g{background:linear-gradient(92deg,var(--blue) 0%,var(--blue2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{margin-top:16px;font-size:18.5px;line-height:1.45;color:var(--t1);max-width:560px;font-weight:400}
-.rule{width:64px;height:3px;background:var(--amber);border-radius:2px;margin:22px 0 0}
-.trust{margin-top:20px;display:flex;gap:0;align-items:center;font-family:'JetBrains Mono',monospace;font-weight:500;font-size:12.5px;letter-spacing:.4px;color:var(--t2)}
+.rule{width:64px;height:3px;background:var(--red);border-radius:2px;margin:22px 0 0;box-shadow:0 0 14px rgba(239,68,68,.5)}
+.trust{margin-top:20px;display:flex;align-items:center;font-family:'JetBrains Mono',monospace;font-weight:500;font-size:12.5px;letter-spacing:.4px;color:var(--t2)}
 .trust span{padding:0 16px;border-left:1px solid var(--line)}
 .trust span:first-child{padding-left:0;border-left:0}
 .trust b{color:var(--t1);font-weight:600}
 
-/* RIGHT: tactical scanner */
-.scanner{position:relative;width:390px;height:390px;justify-self:center;align-self:center}
-.ring{position:absolute;border:1px solid var(--line);border-radius:50%}
-.r1{inset:0} .r2{inset:52px} .r3{inset:112px} .r4{inset:168px}
-.cross{position:absolute;background:var(--line)}
-.cross.h{left:0;right:0;top:50%;height:1px} .cross.v{top:0;bottom:0;left:50%;width:1px}
-.sweep{position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(from 205deg, rgba(30,160,255,.30) 0deg, rgba(30,160,255,0) 60deg, transparent 360deg)}
-.blip{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--acc2);box-shadow:0 0 10px 2px rgba(30,160,255,.6);transform:translate(-50%,-50%)}
-.blip.dim{background:var(--t2);box-shadow:none;opacity:.7}
-.hub{position:absolute;left:50%;top:50%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);
-  background:var(--amber);box-shadow:0 0 0 6px rgba(217,164,65,.18),0 0 22px 4px rgba(217,164,65,.5)}
-.emblem{position:absolute;left:50%;top:50%;width:172px;transform:translate(-50%,-50%);
-  filter:drop-shadow(0 6px 22px rgba(0,0,0,.55))}
-.legend{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);
+/* RIGHT: secure task-force mesh */
+.mesh{position:relative;width:420px;height:420px;justify-self:center;align-self:center}
+.mesh svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.node{position:absolute;width:11px;height:11px;border-radius:50%;transform:translate(-50%,-50%);
+  background:var(--blue2);box-shadow:0 0 10px 2px rgba(47,109,246,.55)}
+.node.dim{background:#5b6b86;box-shadow:none;opacity:.85;width:9px;height:9px}
+.node.assist{background:var(--red);box-shadow:0 0 12px 3px rgba(239,68,68,.6)}
+.node.assist::before,.node.assist::after{content:"";position:absolute;left:50%;top:50%;border-radius:50%;
+  transform:translate(-50%,-50%);border:1px solid rgba(239,68,68,.55)}
+.node.assist::before{width:26px;height:26px}
+.node.assist::after{width:42px;height:42px;border-color:rgba(239,68,68,.28)}
+.alabel{position:absolute;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;
+  font-weight:600;font-size:10px;letter-spacing:2px;color:var(--red2);text-transform:uppercase}
+.emblem{position:absolute;left:50%;top:49%;width:170px;transform:translate(-50%,-50%);
+  filter:drop-shadow(0 6px 24px rgba(0,0,0,.6))}
+.legend{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
   font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:2px;color:var(--t2);text-transform:uppercase;white-space:nowrap}
 
-/* bottom strip */
 .foot{position:absolute;left:68px;bottom:34px;display:flex;align-items:center;gap:16px}
-.tag{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:13px;letter-spacing:3px;color:var(--acc2)}
+.tag{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:13px;letter-spacing:3px;color:var(--blue2)}
 .byline{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1.5px;color:var(--t2);text-transform:uppercase}
 .foot .sepdot{width:4px;height:4px;border-radius:50%;background:var(--line)}
 </style>
 </head>
 <body>
   <div class="grid"></div>
-  <div class="blob a"></div>
-  <div class="blob b"></div>
+  <div class="blob blue"></div>
+  <div class="blob red"></div>
 
   <div class="wrap">
     <div class="left">
@@ -94,19 +90,28 @@ h1 .g{background:linear-gradient(92deg,var(--acc) 0%,var(--acc2) 100%);-webkit-b
       </div>
     </div>
 
-    <div class="scanner">
-      <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div>
-      <div class="cross h"></div><div class="cross v"></div>
-      <div class="sweep"></div>
-      <!-- unit blips -->
-      <div class="blip"      style="left:70%;top:26%"></div>
-      <div class="blip"      style="left:80%;top:60%"></div>
-      <div class="blip dim"  style="left:24%;top:34%"></div>
-      <div class="blip"      style="left:33%;top:74%"></div>
-      <div class="blip dim"  style="left:60%;top:82%"></div>
-      <div class="blip dim"  style="left:18%;top:58%"></div>
+    <div class="mesh">
+      <svg viewBox="0 0 420 420" preserveAspectRatio="none">
+        <g stroke="rgba(47,109,246,.42)" stroke-width="1.4" fill="none">
+          <line x1="210" y1="205" x2="372" y2="232"/>
+          <line x1="210" y1="205" x2="300" y2="352"/>
+          <line x1="210" y1="205" x2="150" y2="360"/>
+          <line x1="210" y1="205" x2="66"  y2="250"/>
+          <line x1="210" y1="205" x2="98"  y2="110"/>
+        </g>
+        <line x1="210" y1="205" x2="340" y2="104" stroke="rgba(239,68,68,.75)" stroke-width="1.6"/>
+      </svg>
+
+      <div class="node dim"    style="left:88.6%;top:55.2%"></div>
+      <div class="node"        style="left:71.4%;top:83.8%"></div>
+      <div class="node dim"    style="left:35.7%;top:85.7%"></div>
+      <div class="node"        style="left:15.7%;top:59.5%"></div>
+      <div class="node dim"    style="left:23.3%;top:26.2%"></div>
+      <div class="node assist" style="left:80.9%;top:24.8%"></div>
+      <div class="alabel"      style="left:80.9%;top:14.5%">Assist</div>
+
       <img class="emblem" src="emblem-detailed.png" alt="">
-      <div class="legend">Task Force · Live</div>
+      <div class="legend">Secure task force mesh</div>
     </div>
   </div>
 
